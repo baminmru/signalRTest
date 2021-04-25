@@ -3,7 +3,7 @@ test usage signalR + PostgreSQL + ASP.NET core
 
 1. Create Database on PostgreSQL 13 server
 2. use /DB/db.sql for build and fill tables
-3. Setup connection at appsettings.Development.json /  appsettings.Production.json
+3. Setup connection for server project at appsettings.Development.json /  appsettings.Production.json
 4. Build server application & start from Visual Studio
 5. Or start server application manually 
 	Server.exe
