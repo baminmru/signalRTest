@@ -27,7 +27,7 @@ namespace agent
             }
 
             pd.IP = "";
-            var nets = new ManagementObjectSearcher("select * from Win32_NetworkAdapterConfiguration").Get();
+            var nets = new ManagementObjectSearcher("select * from Win32_NetworkAdapterConfiguration where IPEnabled=TRUE").Get();
             foreach (ManagementObject net in nets)
             {
                 try
@@ -40,6 +40,7 @@ namespace agent
                             if (pd.IP != "")
                                 pd.IP += "; ";
                             pd.IP += s;
+                            break;  // use only first address
                         }
                     }
                 }
@@ -84,7 +85,7 @@ namespace agent
                 }
                 catch (Exception ex)
                 {
-                    pdf.TotalSize = ex.Message;
+                    pdf.FreeSpace = ex.Message;
                 }
 
                 try
@@ -93,7 +94,7 @@ namespace agent
                 }
                 catch (Exception ex)
                 {
-                    pdf.TotalSize = ex.Message;
+                    pdf.FreeUserSpace = ex.Message;
                 }
 
 
@@ -104,16 +105,21 @@ namespace agent
             return pd;
         }
 
-        public static void Main()
+        public static void Main(String[] args)
         {
             myHub = new SignalRConnection();
+            String url = "http://localhost/agent";
+            if(args.Length > 0)
+            {
+                url = args[0];
+            }
 
             do
             {
                 var pd = GetData();
                 var msg = JsonConvert.SerializeObject(pd);
                 Console.WriteLine("Send to server:" + msg);
-                myHub.Send("http://localhost:30809/agent", msg);
+                myHub.Send(url, msg);
                 Thread.Sleep(myHub.Interval * 1000);
             } while (true);
         }

@@ -36,11 +36,11 @@ ALTER TABLE public.perfdriverinfo
 	
 CREATE TABLE public.AgentSettings
 (
-	AgentSettingsid uuid  not null primary key,
-    ScanInterval integer
+	Name varchar(120) not null primary key,
+    Value integer
 ); 
 
-insert into AgentSettings(AgentSettingsid, ScanInterval) values(gen_random_uuid (),10);
+insert into AgentSettings(Name, Value) values('Scan Interval',10);
 
 
 /*

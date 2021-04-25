@@ -7,44 +7,65 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Server.models
 {
 
-    public class perfdriverinfo
+    [Table("perfdriverinfo")]
+    public class PerfDriverInfo
     {
-        public System.Guid perfdriverinfoid { get; set; }
-        public string name { get; set; }
-        public string totalsize { get; set; }
-        public string freespace { get; set; }
-        public string freeuserspace { get; set; }
+        [Column("perfdriverinfoid")]
+        public System.Guid PerfDriverInfoid { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
 
-        public System.Guid perfdataid { get; set; }
+        [Column("totalsize")]
+        public string Totalsize { get; set; }
+        [Column("freespace")]
+        public string freeSpace { get; set; }
+        [Column("freeuserspace")]
+        public string freeUserSpace { get; set; }
+
+        [Column("perfdataid")]
+        public System.Guid perfDataid { get; set; }
     }
 
-    public class perfdata
+    [Table("perfdata")]
+    public class PerfData
     {
-        public System.Guid perfdataid { get; set; }
+        [Column("perfdataid")]
+        public System.Guid PerfDataID { get; set; }
 
-        public perfdata()
+        public PerfData()
         {
-            driverdata = new List<perfdriverinfo>();
+            driverData = new List<PerfDriverInfo>();
         }
-        public string name { get; set; }
-        public string cpu { get; set; }
 
-        public string ramtotal { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
 
+        [Column("cpu")]
+        public string CPU { get; set; }
 
-        public string ip { get; set; }
+        [Column("ramtotal")]
+        public string ramTotal { get; set; }
 
-        public string ramfree { get; set; }
+        [Column("ip")]
+        public string IP { get; set; }
 
-        public List<perfdriverinfo> driverdata;
+        [Column("ramfree")]
+        public string ramFree { get; set; }
+
+        public List<PerfDriverInfo> driverData;
 
 
     }
 
-    public class agentsettings
+
+    [Table("agentsettings")]
+    public class AgentSettings
     {
-        public System.Guid agentsettingsid { get; set; }
-  
-        public  Int32 scaninterval { get; set; }
+        [Key]
+        [Column("name")]
+        public String Name { get; set; }
+
+        [Column("value")]
+        public  Int32 Value { get; set; }
     }
 }

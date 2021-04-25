@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Server.models;
 using System.Data;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Server.Pages
 {
@@ -15,16 +16,18 @@ namespace Server.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly myContext _db;
+        private readonly IHubContext<AgentHub> _AgentHub;
 
-        public IndexModel(ILogger<IndexModel> logger, myContext db)
+        public IndexModel(ILogger<IndexModel> logger, myContext db, IHubContext<AgentHub> AgentHub)
         {
             _logger = logger;
             _db = db;
+            _AgentHub = AgentHub;
         }
 
         public void OnGet()
         {
-            agentSettings = _db.agentsettings.SingleOrDefault(a => a.scaninterval > 0);
+            agentSettings = _db.AgentSettings.SingleOrDefault(a => a.Name == "Scan Interval");
             string SQL= @"select p.name, p.ip,p.ramtotal,p.ramfree, pi.name driver,pi.totalsize, pi.freespace, pi.freeuserspace from perfdata p,
             (
             select max(created) cr, name from perfdata 
@@ -40,21 +43,21 @@ namespace Server.Pages
 
 
         [BindProperty]
-        public agentsettings agentSettings { get; set; }
+        public AgentSettings agentSettings { get; set; }
 
         public List<Dictionary<string, string>> pd { get; set; }
         
 
         public async Task<IActionResult> OnPost()
         {
-            agentsettings s = _db.agentsettings.SingleOrDefault(a => a.scaninterval > 0);
+            AgentSettings s = _db.AgentSettings.SingleOrDefault(a => a.Name == "Scan Interval");
             if (s == null)
             {
                 return NotFound();
             }
-            s.scaninterval = agentSettings.scaninterval;
-
+            s.Value = agentSettings.Value;
             await _db.SaveChangesAsync();
+            await  _AgentHub.Clients.All.SendAsync("ScanInterval", s.Value);
 
             return RedirectToPage("Index");
         }

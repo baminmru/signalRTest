@@ -157,9 +157,9 @@ namespace Server.models
 
 
 
-        public DbSet<Server.models.perfdata> perfdata { get; set; }
-        public DbSet<Server.models.perfdriverinfo> perfdriverinfo { get; set; }
-        public DbSet<Server.models.agentsettings> agentsettings { get; set; }
+        public DbSet<Server.models.PerfData> PerfData { get; set; }
+        public DbSet<Server.models.PerfDriverInfo > PerfDriverInfo { get; set; }
+        public DbSet<Server.models.AgentSettings> AgentSettings { get; set; }
         
 
 

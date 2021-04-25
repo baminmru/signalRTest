@@ -11,17 +11,17 @@ namespace Server
 {
     public class PerfUtil
     {
-        public static perfdata GetData()
+        public static PerfData GetData()
         {
-            perfdata pd = new perfdata();
+            PerfData pd = new PerfData();
             var rams = new ManagementObjectSearcher("select Capacity from Win32_PhysicalMemory").Get();
             foreach (ManagementObject ram in rams)
             {
-                pd.ramtotal = (Int64.Parse(ram["Capacity"].ToString()) / 1024 / 1024).ToString() + "МБ";
+                pd.ramTotal = (Int64.Parse(ram["Capacity"].ToString()) / 1024 / 1024).ToString() + "МБ";
                 break;
             }
 
-            pd.ip = "";
+            pd.IP = "";
             var nets = new ManagementObjectSearcher("select * from Win32_NetworkAdapterConfiguration").Get();
             foreach (ManagementObject net in nets)
             {
@@ -32,9 +32,9 @@ namespace Server
                     {
                         foreach (string s in (string[])(prop))
                         {
-                            if (pd.ip != "")
-                                pd.ip += ";";
-                            pd.ip += s;
+                            if (pd.IP != "")
+                                pd.IP += ";";
+                            pd.IP += s;
                         }
                     }
                 }
@@ -53,48 +53,48 @@ namespace Server
 
             DriveInfo[] allDrives = DriveInfo.GetDrives();
 
-            pd.name = Environment.MachineName;
+            pd.Name = Environment.MachineName;
 
-            pd.cpu = pCnt.NextValue().ToString();
-            pd.ramfree = mCnt.NextValue().ToString() + "МБ";
+            pd.CPU = pCnt.NextValue().ToString();
+            pd.ramFree = mCnt.NextValue().ToString() + "МБ";
 
             foreach (DriveInfo d in allDrives)
             {
-                perfdriverinfo pdf = new perfdriverinfo();
+                PerfDriverInfo pdf = new PerfDriverInfo();
 
-                pdf.name = d.Name;
+                pdf.Name = d.Name;
                 try
                 {
-                    pdf.totalsize = (d.TotalSize / 1024 / 1024).ToString() + "МБ";
+                    pdf.Totalsize = (d.TotalSize / 1024 / 1024).ToString() + "МБ";
                 }
                 catch (Exception ex)
                 {
-                    pdf.totalsize = ex.Message;
+                    pdf.Totalsize = ex.Message;
                 }
 
 
                 try
                 {
-                    pdf.freespace = (d.TotalFreeSpace / 1024 / 1024).ToString() + "МБ";
+                    pdf.freeSpace = (d.TotalFreeSpace / 1024 / 1024).ToString() + "МБ";
                 }
                 catch (Exception ex)
                 {
-                    pdf.freespace = ex.Message;
+                    pdf.freeSpace = ex.Message;
                 }
 
                 try
                 {
-                    pdf.freeuserspace = (d.AvailableFreeSpace / 1024 / 1024).ToString() + "МБ";
+                    pdf.freeUserSpace = (d.AvailableFreeSpace / 1024 / 1024).ToString() + "МБ";
                 }
                 catch (Exception ex)
                 {
-                    pdf.freeuserspace = ex.Message;
+                    pdf.freeUserSpace = ex.Message;
                 }
 
 
 
 
-                pd.driverdata.Add(pdf);
+                pd.driverData.Add(pdf);
             }
             return pd;
         }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "agent": {
+      "commandName": "Project",
+      "commandLineArgs": "http://localhost:30809/agent"
+    }
+  }
+}

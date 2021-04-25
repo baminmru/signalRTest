@@ -19,6 +19,7 @@ namespace agent
 
                 // receive a message from the hub
                 connection.On<string, string>("ReceiveMessage", (user, message) => OnReceiveMessage(user, message));
+                connection.On<string>("Notify", (message) => OnNotify( message));
                 connection.On<Int32>("ScanInterval", (newInterval) => OnScanInterval(newInterval));
             }
             if (connection.State != HubConnectionState.Connected)
@@ -71,9 +72,17 @@ namespace agent
         private async void OnReceiveMessage(string user, string message)
         {
             Console.WriteLine($"{user}: {message}");
-            await connection.StopAsync();
+            //await connection.StopAsync();
 
         }
+
+        private async void OnNotify( string message)
+        {
+            Console.WriteLine($"{message}");
+            //await connection.StopAsync();
+
+        }
+
 
         private async void OnScanInterval(Int32 newInterval)
         {
