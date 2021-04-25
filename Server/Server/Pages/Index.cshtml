@@ -1,0 +1,94 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+
+<div class="border container" style="padding:30px">
+
+    @if (@Model.pd.Count() > 0)
+    {
+    <table class="table table-striped border">
+        <thead>
+            <tr>
+                <td>
+                    name
+                </td>
+                <td>
+                    net addresses
+                </td>
+                <td>
+                    ram free
+                </td>
+                <td>
+                    ram total
+                </td>
+                <td>
+                    driver
+                </td>
+                <td>
+                    total size
+                </td>
+                <td>
+                    free space
+                </td>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in @Model.pd)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => book["name"])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => book["ip"])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => book["ramfree"])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(mbox => book["ramtotal"])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(mbox => book["driver"])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(mbox => book["totalsize"])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(mbox => book["freespace"])
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+
+   
+</div>
+
+    <div class="border container" style="padding:30px">
+
+        <form method="post">
+            <div asp-validation-summery="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="agentSettings.agentsettingsid" />
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <label>Scan interval</label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="agentSettings.scaninterval" placeholder="Scan interval" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3 offset-md-3">
+                    <input type="submit" value="Update" class="btn btn-primary form-control" />
+                </div>
+            </div>
+        </form>
+    </div>
